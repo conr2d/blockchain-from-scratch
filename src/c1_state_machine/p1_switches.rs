@@ -15,7 +15,7 @@ impl StateMachine for LightSwitch {
     type Transition = ();
 
     fn next_state(starting_state: &bool, t: &()) -> bool {
-        todo!("Exercise 1")
+        !starting_state
     }
 }
 
@@ -30,6 +30,18 @@ pub struct TwoSwitches {
     second_switch: bool,
 }
 
+impl From<&TwoSwitches> for (bool, bool) {
+    fn from(v: &TwoSwitches) -> Self {
+        (v.first_switch, v.second_switch)
+    }
+}
+
+impl From<(bool, bool)> for TwoSwitches {
+    fn from(v: (bool, bool)) -> TwoSwitches {
+        Self { first_switch: v.0, second_switch: v.1 }
+    }
+}
+
 /// Now there are two switches so we need a proper type for the transition.
 pub enum Toggle {
     FirstSwitch,
@@ -42,7 +54,13 @@ impl StateMachine for WeirdSwitchMachine {
     type Transition = Toggle;
 
     fn next_state(starting_state: &TwoSwitches, t: &Toggle) -> TwoSwitches {
-        todo!("Exercise 2")
+        match t {
+            Toggle::FirstSwitch => match starting_state.into() {
+                (true, _) => (false, false),
+                (false, second) => (true, second),
+            },
+            Toggle::SecondSwitch => (starting_state.first_switch, !starting_state.second_switch),
+        }.into()
     }
 }
 
