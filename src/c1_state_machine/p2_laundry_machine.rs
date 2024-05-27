@@ -40,7 +40,60 @@ impl StateMachine for ClothesMachine {
     type Transition = ClothesAction;
 
     fn next_state(starting_state: &ClothesState, t: &ClothesAction) -> ClothesState {
-        todo!("Exercise 3")
+        match starting_state {
+            ClothesState::Clean(v) => match t {
+                ClothesAction::Wear => if *v <= 1 {
+                    ClothesState::Tattered
+                } else {
+                    ClothesState::Dirty(v - 1)
+                },
+                ClothesAction::Wash => if *v <= 1 {
+                    ClothesState::Tattered
+                } else {
+                    ClothesState::Wet(v - 1)
+                },
+                ClothesAction::Dry => if *v <= 1 {
+                    ClothesState::Tattered
+                } else {
+                    ClothesState::Clean(v - 1)
+                },
+            },
+            ClothesState::Dirty(v) => match t {
+                ClothesAction::Wear => if *v <= 1 {
+                    ClothesState::Tattered
+                } else {
+                    ClothesState::Dirty(v - 1)
+                },
+                ClothesAction::Wash => if *v <= 1 {
+                    ClothesState::Tattered
+                } else {
+                    ClothesState::Wet(v - 1)
+                },
+                ClothesAction::Dry => if *v <= 1 {
+                    ClothesState::Tattered
+                } else {
+                    ClothesState::Dirty(v - 1)
+                },
+            },
+            ClothesState::Wet(v) => match t {
+                ClothesAction::Wear => if *v <= 1 {
+                    ClothesState::Tattered
+                } else {
+                    ClothesState::Dirty(v - 1)
+                },
+                ClothesAction::Wash => if *v <= 1 {
+                    ClothesState::Tattered
+                } else {
+                    ClothesState::Wet(v - 1)
+                },
+                ClothesAction::Dry => if *v <= 1 {
+                    ClothesState::Tattered
+                } else {
+                    ClothesState::Clean(v - 1)
+                },
+            },
+            ClothesState::Tattered => ClothesState::Tattered,
+        }
     }
 }
 
